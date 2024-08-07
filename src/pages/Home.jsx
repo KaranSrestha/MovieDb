@@ -36,12 +36,14 @@ const Home = () => {
         />
         <CardRow
           movies={topPicks}
+          movieType={1}
         />
         <Title
           text="Trending Now"
         />
         <CardRow
           movies={trending}
+          movieType={2}
         />
         <Footer/>
     </StyledContainer>

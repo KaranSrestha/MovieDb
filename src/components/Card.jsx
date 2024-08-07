@@ -22,8 +22,8 @@ const Card = ({movie}) => {
 }
 
 const StyledContainer = styled.div`
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 170px;
+    max-width: 170px;
     height: 300px;
     padding: 10px;
     color: white;
@@ -45,10 +45,10 @@ const StyledContainer = styled.div`
       margin-top: 5px;
       text-transform: capitalize;
       letter-spacing: 1px;
-      font-size: 14px;
+      font-size: 0.7rem;
     }
     p{
-      font-size: 12px;
+      font-size: 0.6rem;
       font-weight: 200;
       color: #c6c6c6;
       letter-spacing: 2px;

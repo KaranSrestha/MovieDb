@@ -5,6 +5,8 @@ import styled from 'styled-components';
 const NavBar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [movieName, setMovieName] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -12,6 +14,24 @@ const NavBar = () => {
   };
   const toggleSearch = ()=>{
     setSearchOpen(!searchOpen);
+  }
+  const handleChange= async (e) => {
+    const query = e.target.value;
+    setMovieName(query);
+
+    if (query === '') {
+        setSearchResult([]);
+        return;
+    }
+    try{
+      const apiKey = import.meta.env.VITE_API_KEY;
+      const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieName}`)
+      const result = await response.json();
+      setSearchResult(result.results);
+      
+    }catch(e){
+      console.log(e);
+    }
   }
   return (
     <StyledNavContainer>
@@ -35,7 +55,17 @@ const NavBar = () => {
       </div>
       <div className="searchContainer">
         <button onClick={toggleSearch}><i className={searchOpen?"fa-solid fa-x":"fa-solid fa-magnifying-glass"}></i></button>
-        <div className={searchOpen?'search--bar search--appear':'search--bar search--disappear'}><input type="text" placeholder='Enter Movie name to search'/><button><i className="fa-solid fa-magnifying-glass mini-search"></i></button></div>
+        <div className={searchOpen?'search--bar search--appear':'search--bar search--disappear'}>
+          <input type="text" placeholder='Enter Movie name to search' value={movieName} onChange={handleChange}/>
+          <ul className="searchResults">
+            {searchResult.map(result=>{
+              return <li onClick={()=>navigate(`/movie/${result.id}`)}> 
+                        <img src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}/>
+                        <span>{result.title}</span>
+                     </li>
+            })}
+          </ul>
+        </div>
       </div>
     </StyledNavContainer>
   );
@@ -137,6 +167,38 @@ const StyledNavContainer = styled.nav`
       height: 45px;
       opacity: 0;
       transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      .searchResults{
+        position: absolute;
+        top: 45px;
+        list-style: none;
+        width: 100%;
+        background-color: #000000;
+        margin-top: 5px;
+        max-height: 200px;
+        overflow-y: scroll;
+        li{
+          color: white;
+          width: 100%;
+          cursor: pointer;
+          display: flex;
+          padding: 5px 0;
+          border-bottom: 1px solid #a8a8a8;
+          &:hover{
+            background-color: #6b6b6b;
+          }
+          img{
+            width: 40px;
+            height: 60px;
+            object-fit: cover;
+            margin-left: 10px;
+          }
+          span{
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+          }
+        }
+      }
       input{
         height: 100%;
         width: 300px;
@@ -145,24 +207,9 @@ const StyledNavContainer = styled.nav`
         border: none;
         font-size: 1rem;
       }
-      .mini-search{
-        font-size: 1.3rem;
-        color: black;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: translateY(-50%);
-        background-color: red;
-        width: 45px;
-        height: 100%;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-      }
       @media (max-width: 500px){
-        width: 100vw;
+        width: 95vw;
+        margin-right: 7px;
         input{
           width: 100%;
         }
