@@ -5,7 +5,7 @@ import styled from "styled-components"
 const TvCard = ({show}) => {
     const navigate = useNavigate();
     const handleClick = (e) =>{
-        navigate(`/movie/${show.id}`)
+        navigate(`/shows/${show.id}`)
     }
   return (
     <StyledContainer onClick={handleClick}>
