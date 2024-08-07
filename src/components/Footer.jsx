@@ -16,7 +16,7 @@ const Footer = () => {
 const StyledFooter = styled.footer`
     width: 100%;
     background: #dddddd;
-    height: 200px;
+    height: 100px;
     position: relative;
     border-top-left-radius: 50%;
     display: flex;
@@ -24,7 +24,7 @@ const StyledFooter = styled.footer`
     align-items: center;
     flex-direction: column;
     @media (min-width: 500px){
-        height: 400px;
+        height: 150px;
     }
     p{
         display: flex;
